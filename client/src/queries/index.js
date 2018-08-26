@@ -17,6 +17,15 @@ export const GET_ALL_RECIPES = gql`
 // RECIPES Mutations
 
 // USERS Queries
+export const GET_CURRENT_USER = gql`
+  query {
+    getCurrentUser {
+      username
+      joined
+      email
+    }
+  }
+`;
 
 // USERS Mutations
 export const SIGNIN_USER = gql`
