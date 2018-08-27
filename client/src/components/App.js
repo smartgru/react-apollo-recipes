@@ -13,7 +13,18 @@ const App = () => (
         if (loading) return <div>Loading...</div>;
         if (error) return <div>Error</div>;
         console.log(data);
-        return <p>Recipes</p>;
+        return (
+          <ul>
+            {data.getAllRecipes.map(recipe => (
+              <li key={recipe._id}>
+                <h4>{recipe.name}</h4>
+                <p>
+                  <strong>{recipe.category}</strong>
+                </p>
+              </li>
+            ))}
+          </ul>
+        );
       }}
     </Query>
   </div>
