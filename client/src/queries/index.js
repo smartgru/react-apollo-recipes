@@ -12,6 +12,19 @@ export const GET_ALL_RECIPES = gql`
 `;
 
 // RECIPES Mutations
+export const GET_RECIPE = gql`
+  query($_id: ID!) {
+    getRecipe(_id: $_id) {
+      _id
+      name
+      category
+      description
+      instructions
+      created
+      likes
+    }
+  }
+`;
 
 // USERS Queries
 export const GET_CURRENT_USER = gql`
