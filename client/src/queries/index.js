@@ -11,10 +11,36 @@ export const GET_ALL_RECIPES = gql`
   }
 `;
 
-// RECIPES Mutations
 export const GET_RECIPE = gql`
   query($_id: ID!) {
     getRecipe(_id: $_id) {
+      _id
+      name
+      category
+      description
+      instructions
+      created
+      likes
+    }
+  }
+`;
+
+// RECIPES Mutations
+export const ADD_RECIPE = gql`
+  mutation(
+    $name: String!
+    $category: String!
+    $description: String!
+    $instructions: String!
+    $username: String
+  ) {
+    addRecipe(
+      name: $name
+      category: $category
+      description: $description
+      instructions: $instructions
+      username: $username
+    ) {
       _id
       name
       category
