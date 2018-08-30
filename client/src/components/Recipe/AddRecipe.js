@@ -1,15 +1,24 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import Error from '../Error';
 import { ADD_RECIPE } from '../../queries';
 
+const initialState = {
+  name: '',
+  instructions: '',
+  category: 'Breakfast',
+  description: '',
+  username: '',
+};
+
 class AddRecipe extends React.Component {
-  state = {
-    name: '',
-    instructions: '',
-    category: 'Breakfast',
-    description: '',
-    username: '',
+  state = { ...initialState };
+
+  clearState = () => {
+    this.setState({
+      ...initialState,
+    });
   };
 
   componentDidMount = () => {
@@ -30,6 +39,8 @@ class AddRecipe extends React.Component {
 
     addRecipe().then(({ data }) => {
       console.log(data);
+      this.clearState();
+      this.props.history.push('/');
     });
   };
 
@@ -103,4 +114,4 @@ class AddRecipe extends React.Component {
   }
 }
 
-export default AddRecipe;
+export default withRouter(AddRecipe);
