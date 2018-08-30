@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import Error from '../Error';
-import { ADD_RECIPE } from '../../queries';
+import { ADD_RECIPE, GET_ALL_RECIPES } from '../../queries';
 
 const initialState = {
   name: '',
@@ -50,6 +50,17 @@ class AddRecipe extends React.Component {
     return isInvalid;
   };
 
+  updateCache = (cache, { data: { addRecipe } }) => {
+    const { getAllRecipes } = cache.readQuery({ query: GET_ALL_RECIPES });
+
+    cache.writeQuery({
+      query: GET_ALL_RECIPES,
+      data: {
+        getAllRecipes: [addRecipe, ...getAllRecipes],
+      },
+    });
+  };
+
   render() {
     const { name, category, description, instructions, username } = this.state;
 
@@ -57,6 +68,7 @@ class AddRecipe extends React.Component {
       <Mutation
         mutation={ADD_RECIPE}
         variables={{ name, category, description, instructions, username }}
+        update={this.updateCache}
       >
         {(addRecipe, { data, loading, error }) => {
           return (
