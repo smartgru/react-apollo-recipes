@@ -1,7 +1,12 @@
 import React from 'react';
+import UserInfo from './UserInfo';
 
-const Profile = () => {
-  return <div>PROFILE</div>;
+const Profile = ({ session }) => {
+  return (
+    <div className="App">
+      <UserInfo session={session} />
+    </div>
+  );
 };
 
 export default Profile;
