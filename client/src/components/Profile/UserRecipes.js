@@ -34,13 +34,29 @@ const UserRecipes = ({ username }) => {
                 <Mutation
                   mutation={DELETE_USER_RECIPE}
                   variables={{ _id: recipe._id }}
+                  update={(cache, { data: { deleteUserRecipe } }) => {
+                    const { getUserRecipes } = cache.readQuery({
+                      query: GET_USER_RECIPES,
+                      variables: { username },
+                    });
+
+                    cache.writeQuery({
+                      query: GET_USER_RECIPES,
+                      variables: { username },
+                      data: {
+                        getUserRecipes: getUserRecipes.filter(
+                          recipe => recipe._id !== deleteUserRecipe._id,
+                        ),
+                      },
+                    });
+                  }}
                 >
-                  {deleteUserRecipe => (
+                  {(deleteUserRecipe, attrs = {}) => (
                     <p
                       onClick={() => handleDelete(deleteUserRecipe)}
                       className="delete-button"
                     >
-                      X
+                      {attrs.loading ? 'deleting...' : 'X'}
                     </p>
                   )}
                 </Mutation>
