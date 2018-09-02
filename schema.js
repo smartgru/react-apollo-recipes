@@ -43,7 +43,7 @@ exports.typeDefs = `
     ): Recipe
 
     deleteUserRecipe(
-      _id: ID!
+      _id: ID
     ):Recipe
 
     signinUser(

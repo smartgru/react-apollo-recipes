@@ -84,7 +84,7 @@ exports.resolvers = {
     },
 
     deleteUserRecipe: async (root, { _id }, { Recipe }) => {
-      const recipe = await Recipe.remove({ _id });
+      const recipe = await Recipe.findOneAndRemove({ _id });
       return recipe;
     },
 
