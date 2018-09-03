@@ -51,6 +51,11 @@ exports.typeDefs = `
       username: String!
     ):Recipe
 
+    unlikeRecipe(
+      _id: ID!,
+      username: String!
+    ):Recipe
+
     signinUser(
       username: String!,
       password: String!
