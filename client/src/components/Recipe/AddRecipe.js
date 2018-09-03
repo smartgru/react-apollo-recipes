@@ -39,7 +39,6 @@ class AddRecipe extends React.Component {
     e.preventDefault();
 
     addRecipe().then(({ data }) => {
-      console.log(data);
       this.clearState();
       this.props.history.push('/');
     });
