@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import posed from 'react-pose';
 import { GET_ALL_RECIPES } from '../queries';
 import RecipeItem from './Recipe/RecipeItem';
+import Spinner from './Spinner';
 
 import './App.css';
 
@@ -37,7 +38,7 @@ class App extends React.Component {
         <h1 className="main-title">Find Recipes You Love</h1>
         <Query query={GET_ALL_RECIPES}>
           {({ data, loading, error }) => {
-            if (loading) return <div>Loading...</div>;
+            if (loading) return <Spinner />;
             if (error) return <div>Error</div>;
             return (
               <RecipeList
