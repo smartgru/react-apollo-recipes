@@ -22,8 +22,8 @@ import RecipePage from './components/Recipe/RecipePage';
 import Profile from './components/Profile/Profile';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4444/graphql',
-  // uri: 'https://marg-recipes.herokuapp.com/graphql',
+  // uri: 'http://localhost:4444/graphql',
+  uri: 'https://marg-recipes.herokuapp.com/graphql',
   fetchOptions: {
     credentials: 'include',
   },
@@ -39,9 +39,9 @@ const client = new ApolloClient({
     if (networkError) {
       console.log('Network Error', networkError);
 
-      // if(networkError.statusCode === 401) {
-      //   localStorage.removeItem('token')
-      // }
+      if (networkError.statusCode === 401) {
+        localStorage.removeItem('token');
+      }
     }
   },
 });

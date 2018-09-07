@@ -32,6 +32,7 @@ class Search extends React.Component {
                 this.handleChange(data);
               }}
               type="search"
+              className="search"
               placeholder="Search for Recipes"
             />
             <ul>
