@@ -10,6 +10,14 @@ import {
 import Spinner from '../Spinner';
 
 class UserRecipes extends React.Component {
+  state = {
+    name: '',
+    imageUrl: '',
+    category: '',
+    description: '',
+    modal: false,
+  };
+
   handleDelete = deleteUserRecipe => {
     const confirmDelete = window.confirm('Are you sure?');
 
@@ -20,8 +28,22 @@ class UserRecipes extends React.Component {
     }
   };
 
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  closeModal = e => {
+    this.setState({
+      modal: false,
+    });
+  };
+
   render() {
     const { username } = this.props;
+    const { modal } = this.state;
 
     return (
       <Query query={GET_USER_RECIPES} variables={{ username }}>
@@ -31,6 +53,12 @@ class UserRecipes extends React.Component {
 
           return (
             <ul>
+              {modal && (
+                <EditRecipeModal
+                  closeModal={this.closeModal}
+                  handleChange={this.handleChange}
+                />
+              )}
               <h3>Your Recipes</h3>
 
               {!data.getUserRecipes.length && (
@@ -71,7 +99,12 @@ class UserRecipes extends React.Component {
                   >
                     {(deleteUserRecipe, attrs = {}) => (
                       <div>
-                        <button className="button-primary">Update</button>
+                        <button
+                          className="button-primary"
+                          onClick={() => this.setState({ modal: true })}
+                        >
+                          Update
+                        </button>
                         <p
                           onClick={() => this.handleDelete(deleteUserRecipe)}
                           className="delete-button"
@@ -90,5 +123,43 @@ class UserRecipes extends React.Component {
     );
   }
 }
+
+const EditRecipeModal = ({ handleChange, closeModal }) => (
+  <div className="modal modal-open">
+    <div className="modal-inner">
+      <div className="modal-content">
+        <form className="modal-content-inner">
+          <h4>Edit Recipe</h4>
+
+          <label htmlFor="name">Name</label>
+          <input type="text" name="name" onChange={handleChange} />
+
+          <label htmlFor="category">Category</label>
+          <select name="category" onChange={handleChange}>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+          </select>
+
+          <label htmlFor="imageUrl">Image</label>
+          <input type="text" name="imageUrl" onChange={handleChange} />
+
+          <label htmlFor="description">Description</label>
+          <input type="text" name="description" onChange={handleChange} />
+
+          <hr />
+
+          <div className="modal-buttons">
+            <button type="submit" className="button-primary">
+              Update
+            </button>
+            <button onClick={closeModal}>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+);
 
 export default UserRecipes;
