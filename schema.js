@@ -48,6 +48,14 @@ exports.typeDefs = `
       _id: ID
     ):Recipe
 
+    updateUserRecipe(
+      _id: ID!,
+      name: String!, 
+      imageUrl: String!,
+      category: String!, 
+      description: String!
+    ):Recipe
+
     likeRecipe(
       _id: ID!,
       username: String!

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {
   GET_USER_RECIPES,
   DELETE_USER_RECIPE,
+  UPDATE_USER_RECIPE,
   GET_ALL_RECIPES,
   GET_CURRENT_USER,
 } from '../../queries';
@@ -33,6 +34,14 @@ class UserRecipes extends React.Component {
     const { name, value } = e.target;
     this.setState({
       [name]: value,
+    });
+  };
+
+  handleSubmit = (e, updateUserRecipe) => {
+    e.preventDefault();
+
+    updateUserRecipe().then(({ data }) => {
+      this.closeModal();
     });
   };
 
@@ -66,6 +75,7 @@ class UserRecipes extends React.Component {
                   recipe={this.state}
                   closeModal={this.closeModal}
                   handleChange={this.handleChange}
+                  handleSubmit={this.handleSubmit}
                 />
               )}
               <h3>Your Recipes</h3>
@@ -133,61 +143,82 @@ class UserRecipes extends React.Component {
   }
 }
 
-const EditRecipeModal = ({ recipe, handleChange, closeModal }) => (
-  <div className="modal modal-open">
-    <div className="modal-inner">
-      <div className="modal-content">
-        <form className="modal-content-inner">
-          <h4>Edit Recipe</h4>
+const EditRecipeModal = ({
+  recipe,
+  handleChange,
+  handleSubmit,
+  closeModal,
+}) => (
+  <Mutation
+    mutation={UPDATE_USER_RECIPE}
+    variables={{
+      _id: recipe._id,
+      name: recipe.name,
+      category: recipe.category,
+      imageUrl: recipe.imageUrl,
+      description: recipe.description,
+    }}
+  >
+    {updateUserRecipe => (
+      <div className="modal modal-open">
+        <div className="modal-inner">
+          <div className="modal-content">
+            <form
+              onSubmit={e => handleSubmit(e, updateUserRecipe)}
+              className="modal-content-inner"
+            >
+              <h4>Edit Recipe</h4>
 
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            onChange={handleChange}
-            value={recipe.name}
-          />
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                value={recipe.name}
+              />
 
-          <label htmlFor="category">Category</label>
-          <select
-            name="category"
-            onChange={handleChange}
-            value={recipe.category}
-          >
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
-          </select>
+              <label htmlFor="category">Category</label>
+              <select
+                name="category"
+                onChange={handleChange}
+                value={recipe.category}
+              >
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snack">Snack</option>
+              </select>
 
-          <label htmlFor="imageUrl">Image</label>
-          <input
-            type="text"
-            name="imageUrl"
-            onChange={handleChange}
-            value={recipe.imageUrl}
-          />
+              <label htmlFor="imageUrl">Image</label>
+              <input
+                type="text"
+                name="imageUrl"
+                onChange={handleChange}
+                value={recipe.imageUrl}
+              />
 
-          <label htmlFor="description">Description</label>
-          <input
-            type="text"
-            name="description"
-            onChange={handleChange}
-            value={recipe.description}
-          />
+              <label htmlFor="description">Description</label>
+              <input
+                type="text"
+                name="description"
+                onChange={handleChange}
+                value={recipe.description}
+              />
 
-          <hr />
+              <hr />
 
-          <div className="modal-buttons">
-            <button type="submit" className="button-primary">
-              Update
-            </button>
-            <button onClick={closeModal}>Cancel</button>
+              <div className="modal-buttons">
+                <button type="submit" className="button-primary">
+                  Update
+                </button>
+                <button onClick={closeModal}>Cancel</button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
-  </div>
+    )}
+  </Mutation>
 );
 
 export default UserRecipes;

@@ -82,6 +82,31 @@ export const DELETE_USER_RECIPE = gql`
   }
 `;
 
+export const UPDATE_USER_RECIPE = gql`
+  mutation(
+    $_id: ID!
+    $name: String!
+    $imageUrl: String!
+    $category: String!
+    $description: String!
+  ) {
+    updateUserRecipe(
+      _id: $_id
+      name: $name
+      imageUrl: $imageUrl
+      category: $category
+      description: $description
+    ) {
+      _id
+      name
+      likes
+      imageUrl
+      category
+      description
+    }
+  }
+`;
+
 // USERS Queries
 export const GET_CURRENT_USER = gql`
   query {
